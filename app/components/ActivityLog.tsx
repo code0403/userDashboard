@@ -9,7 +9,7 @@ export default function ActivityLog() {
       <h3 className="font-bold mb-2">Activity Log</h3>
       <ul className="list-disc pl-5 space-y-1">
         {activityLog.map((log, idx) => (
-          <li key={idx}>{log}</li>
+          <li key={idx}>{log.message}</li>
         ))}
       </ul>
     </div>
