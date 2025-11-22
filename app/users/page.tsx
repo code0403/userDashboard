@@ -20,7 +20,8 @@ export default function UsersPage() {
 
   console.log("Users in UsersPage:", users);
 
-  const [selectedUser, setSelectedUser] = useState(null);
+  // const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isFormOpen, setFormOpen] = useState(false);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
 
