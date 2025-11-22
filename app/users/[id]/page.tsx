@@ -12,7 +12,7 @@ export default function UserDetailPage() {
   const darkMode = useStore((state) => state.darkMode);
   const params = useParams();
   const router = useRouter();
-  const userId = params.id;
+  const userId = params.id as string | number;
 
   const { data: user, isLoading } = useQuery<User>({
     queryKey: ['user', userId],
