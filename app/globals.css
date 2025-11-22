@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+
+
+
+/* You can optionally override base styles like this: */
+body {
+  @apply m-0 p-0 font-sans;
+}
+
+

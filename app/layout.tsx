@@ -1,21 +1,12 @@
-import "./globals.css";
-import Providers from "./providers";
+import ClientLayout from "./ClientLayout";
+
 
 export const metadata = {
   title: "User Dashboard",
   description: "User management dashboard (starter)",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className="min-h-screen">
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  );
+export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode;}>) {
+
+  return <ClientLayout>{children}</ClientLayout>;
 }
