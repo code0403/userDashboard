@@ -18,7 +18,9 @@ export default function ClientLayout({ children, }: Readonly<{ children: React.R
 
   return (
     <html lang="en">
-      <body className="min-h-screen bg-gray-50 dark:bg-zinc-800 text-gray-900 dark:text-gray-100">
+      <body className={`min-h-screen ${
+    darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"
+  }`}>
         <Providers>
           <Navbar />
           {children}

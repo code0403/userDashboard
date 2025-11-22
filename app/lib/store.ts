@@ -28,7 +28,7 @@ interface AppState {
 export const useStore = create<AppState>()(
   persist(
     (set) => ({
-      darkMode: false,
+      darkMode: true,
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
       loggedInUser: null,
       setLoggedInUser: (user) => set({ loggedInUser: user }),
@@ -36,7 +36,7 @@ export const useStore = create<AppState>()(
       // addActivity: (entry) =>
       //   set((state) => ({ activityLog: [...state.activityLog, entry] })),
       addActivity: (entry) =>
-  set((state) => ({ activityLog: [...state.activityLog, entry] })),
+        set((state) => ({ activityLog: [...state.activityLog, entry] })),
       isActivityOpen: false,
       toggleActivity: () => set((state) => ({ isActivityOpen: !state.isActivityOpen })),
     }),

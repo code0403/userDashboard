@@ -14,6 +14,7 @@ interface DeleteDialogProps {
 }
 
 export default function DeleteDialog({ user, open, onOpenChange }: DeleteDialogProps) {
+  const darkMode = useStore((state) => state.darkMode);
   const queryClient = useQueryClient();
   const addActivity = useStore((state) => state.addActivity);
 
@@ -49,16 +50,24 @@ export default function DeleteDialog({ user, open, onOpenChange }: DeleteDialogP
     <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40" />
-        <AlertDialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl z-50 border border-gray-200 dark:border-gray-700">
+        <AlertDialog.Content
+          className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 p-6 rounded-2xl shadow-xl z-50 border transition-colors
+            ${darkMode ? "bg-gray-800 border-gray-700 text-gray-100" : "bg-white border-gray-200 text-gray-900"}
+          `}
+        >
           <AlertDialog.Title className="text-xl font-bold text-red-600 mb-2">
             Delete User
           </AlertDialog.Title>
-          <AlertDialog.Description className="text-gray-700 dark:text-gray-200 mb-4">
+          <AlertDialog.Description className={`mb-4 ${darkMode ? "text-gray-200" : "text-gray-700"}`}>
             Are you sure you want to delete <span className="font-semibold">{user.name}</span>? This action cannot be undone.
           </AlertDialog.Description>
 
           <div className="flex justify-end gap-3 mt-4">
-            <AlertDialog.Cancel className="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <AlertDialog.Cancel
+              className={`px-4 py-2 border rounded-lg transition-colors
+                ${darkMode ? "border-gray-600 hover:bg-gray-700" : "border-gray-300 hover:bg-gray-100"}
+              `}
+            >
               Cancel
             </AlertDialog.Cancel>
             <AlertDialog.Action
