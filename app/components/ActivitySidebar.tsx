@@ -45,7 +45,7 @@ export default function ActivitySidebar() {
                     key={idx}
                     className="text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 pb-1"
                   >
-                    {entry}
+                    {entry.message}
                   </li>
                 ))}
             </ul>
