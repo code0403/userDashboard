@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# User Dashboard
 
-## Getting Started
+A responsive and stylish **User Dashboard** built with **Next.js**, **Tailwind CSS**, **React Query**, and **Zustand**. This project allows you to **view, add, edit, and delete users**, along with a **dynamic activity log** and **dark/light mode toggle**.
 
-First, run the development server:
+---
+
+## 🔗 Live Demo
+
+- [Deployed Version](https://tinylink-pink.vercel.app)
+- Local Development: `http://localhost:3000`
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend:** Next.js 13 (App Router)
+- **Styling:** Tailwind CSS v4
+- **State Management:** Zustand
+- **Data Fetching / Caching:** React Query
+- **UI Components:** Radix UI (Dialog, AlertDialog, Switch, Select)
+- **API:** Mock API via Axios
+
+---
+
+## 🌟 Features
+
+### User Management
+
+- View all users in a sortable and filterable table
+- Add new users
+- Edit existing users
+- Delete users with confirmation
+- Navigate to **User Detail Page** by clicking on a row
+  - Shows Name, Email, Phone, Company, and Full Address
+
+### Dark / Light Mode
+
+- Toggle between dark and light themes globally
+- Fully responsive with Tailwind dark mode (`class` strategy)
+
+### Activity Log (Bonus Feature)
+
+- Tracks **add, edit, delete** actions
+- Accessible via an icon in the Navbar
+- Slide-in sidebar with reverse chronological log
+- Persisted across navigation using Zustand
+
+---
+
+## 🖥 Project Structure
+
+
+app/
+├─ components/
+│ ├─ Navbar.tsx
+│ ├─ Table.tsx
+│ ├─ UserForm.tsx
+│ ├─ DeleteDialog.tsx
+│ └─ ActivitySidebar.tsx
+├─ lib/
+│ ├─ api.ts
+│ ├─ store.ts
+│ └─ types.ts
+├─ users/
+│ └─ [id]/page.tsx # Dynamic route for user details
+├─ globals.css
+└─ page.tsx # Main dashboar
+
+
+---
+## ⚡ How It Works
+
+1. **Main Dashboard**
+   - Lists all users in a table
+   - Search by name, filter by company, sort by email
+   - Click a row to go to `/users/[id]`
+
+2. **User Detail Page**
+   - Dynamic route using `Next.js App Router`
+   - Fetches user data via React Query
+   - Displays all user details
+
+3. **Add/Edit User**
+   - Modal form using Radix Dialog
+   - Validates input fields
+   - Updates the activity log automatically
+
+4. **Delete User**
+   - AlertDialog confirmation
+   - Updates the activity log automatically
+
+5. **Activity Log Sidebar**
+   - Toggle via Navbar icon
+   - Shows add/edit/delete actions with timestamps
+   - Dark/light mode compatible
+
+6. **Dark/Light Mode Toggle**
+   - Switch in Navbar
+   - Updates UI colors conditionally using Tailwind's `dark:` classes
+---
+## 💻 Installation
 
 ```bash
+# Clone the repo
+git clone <repo-url>
+cd user-dashboard
+
+# Install dependencies
+npm install
+
+# Run locally
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
