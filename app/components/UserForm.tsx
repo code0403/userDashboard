@@ -4,7 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState, useEffect } from "react";
 import { User } from "../lib/types";
 import api from "../lib/api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useStore } from "../lib/store";
 
 
@@ -35,18 +35,21 @@ export default function UserForm({ user, open, onOpenChange }: UserFormProps) {
   // Prefill form when editing a user
   useEffect(() => {
     if (user) {
-      setFormData({
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        companyName: user.company.name,
+      // Delay the state update to next tick
+      const timeout = setTimeout(() => {
+        setFormData({
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          companyName: user.company.name,
+        });
       });
-    } else {
-      setFormData({ name: "", email: "", phone: "", companyName: "" });
+      return () => clearTimeout(timeout);
     }
   }, [user]);
 
   const queryClient = useQueryClient();
+  const usersQueryKey: QueryKey = ["users"];
 
   const mutation = useMutation({
 
@@ -66,13 +69,19 @@ export default function UserForm({ user, open, onOpenChange }: UserFormProps) {
     },
 
     onMutate: async (newData) => {
-      await queryClient.cancelQueries(["users"]);
-      const previousUsers = queryClient.getQueryData<User[]>(["users"]);
+      await queryClient.cancelQueries({ queryKey: usersQueryKey });
+      const previousUsers = queryClient.getQueryData<User[]>(usersQueryKey);
 
       if (user) {
-        queryClient.setQueryData<User[]>(["users"], (old) =>
+        queryClient.setQueryData<User[]>(usersQueryKey, (old) =>
           old?.map((u) =>
-            u.id === user.id ? { ...u, ...newData, company: { name: newData.companyName } } : u
+            u.id === user.id
+              ? {
+                ...u,
+                ...newData,
+                company: { ...u.company, name: newData.companyName },
+              }
+              : u
           )
         );
         // addActivity(`Edited user: ${user.name}`);
@@ -84,7 +93,20 @@ export default function UserForm({ user, open, onOpenChange }: UserFormProps) {
       } else {
         queryClient.setQueryData<User[]>(["users"], (old) => [
           ...(old || []),
-          { id: Date.now(), ...newData, company: { name: newData.companyName } },
+          {
+            id: Date.now(),
+            name: newData.name,
+            email: newData.email,
+            phone: newData.phone,
+            company: {
+              name: newData.companyName,
+              catchPhrase: "",
+              bs: "",
+            },
+            username: "",
+            address: { street: "", city: "", zipcode: "" },
+            website: "",
+          },
         ]);
         // addActivity(`Added user: ${newData.name}`);
         addActivity({
@@ -101,7 +123,7 @@ export default function UserForm({ user, open, onOpenChange }: UserFormProps) {
       queryClient.setQueryData(["users"], context.previousUsers);
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["users"]);
+      queryClient.invalidateQueries({ queryKey: usersQueryKey });
       onOpenChange(false);
     },
   });

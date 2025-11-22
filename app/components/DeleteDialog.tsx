@@ -3,7 +3,7 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { User } from "../lib/types";
 import api from "../lib/api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useStore } from "../lib/store";
 
 
@@ -17,14 +17,15 @@ export default function DeleteDialog({ user, open, onOpenChange }: DeleteDialogP
   const darkMode = useStore((state) => state.darkMode);
   const queryClient = useQueryClient();
   const addActivity = useStore((state) => state.addActivity);
+  const usersQueryKey: QueryKey = ["users"];
 
   const mutation = useMutation({
     mutationFn: () => api.delete(`/users/${user.id}`),
     onMutate: async () => {
-      await queryClient.cancelQueries(["users"]);
-      const previousUsers = queryClient.getQueryData<User[]>(["users"]);
+      await queryClient.cancelQueries({ queryKey: usersQueryKey });
+      const previousUsers = queryClient.getQueryData<User[]>(usersQueryKey);
 
-      queryClient.setQueryData<User[]>(["users"], (old) =>
+      queryClient.setQueryData<User[]>(usersQueryKey, (old) =>
         old?.filter((u) => u.id !== user.id)
       );
 
@@ -41,7 +42,7 @@ export default function DeleteDialog({ user, open, onOpenChange }: DeleteDialogP
       queryClient.setQueryData(["users"], context.previousUsers);
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["users"]);
+      queryClient.invalidateQueries({ queryKey: usersQueryKey });
       onOpenChange(false);
     },
   });

@@ -3,12 +3,20 @@
 export interface User {
   id: number;
   name: string;
-  username: string;
   email: string;
-  address: Address;
   phone: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+  username: string;
+  address: {
+    street: string;
+    city: string;
+    zipcode: string;
+  };
   website: string;
-  company: Company;
 }
 
 
